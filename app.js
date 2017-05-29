@@ -15,6 +15,7 @@ var msglog = require('./routes/msglog');
 var getMsglogs = require('./routes/getMsgLogs');
 var removeElem = require('./routes/removeElem');
 var signlogpage = require('./routes/signlogpage');
+var logout = require('./routes/logout');
 
 var app = express();
 // view engine setup
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use(sessionsexp({ resave: true, saveUninitialized: true, secret: 'einsite', cookie: { maxAge: 600000 } }));
+app.use(sessionsexp({ resave: true, saveUninitialized: true, secret: 'kisan', cookie: { maxAge: 600000 } }));
 
 app.use('/', signlogpage);
 app.use('/index', index);
@@ -39,6 +40,7 @@ app.use('/addContact', addContact);
 app.use('/msglog', msglog);
 app.use('/getMsglogs', getMsglogs);
 app.use('/removeElem', removeElem);
+app.use('/logout', logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

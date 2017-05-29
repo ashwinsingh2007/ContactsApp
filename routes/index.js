@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
             } else {
                 db.CreateUsers(req.body, function(result) {
                     if (result) {
-                        req.session.user = req.body.emailLogin;
+                        req.session.user = req.body.email;
                         res.sendFile(path.join(__dirname, '../views', 'index.html'));
                     } else {
                         res.send("Error occured !! May be credentials already used for 'email'");
