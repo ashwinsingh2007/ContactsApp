@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     var param = urlParse.query;
     console.log(param);
     try {
-        db.saveContactsDetails(param, function(result) {
+        db.saveContactsDetails(req, param, function(result) {
             console.log(result);
             res.send('Contacts Added Successfully.');
         });

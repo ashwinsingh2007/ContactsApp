@@ -5,7 +5,11 @@ var db = require('../controllers/dbcontroller');
 /* GET home page. */
 router.get('/', function(req, res) {
     try {
-        res.sendFile(path.join(__dirname, '../views', 'index.html'));
+        if (!!req.session.user) {
+            res.sendFile(path.join(__dirname, '../views', 'index.html'));
+        } else {
+            res.sendFile(path.join(__dirname, '../views', 'signlogpage.html'));
+        }
     } catch (ex) {
         console.log(ex);
     }

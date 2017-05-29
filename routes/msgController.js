@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
             console.log(result);
             res.send("Message sent successfully.");
         });
-        db.saveMessage(param, function(result) {
+        db.saveMessage(req, param, function(result) {
             console.log(result);
         });
     } catch (ex) {

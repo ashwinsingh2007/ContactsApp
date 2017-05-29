@@ -30,57 +30,7 @@ var CreateUsers = function(body, callback) {
         }
     })
 }
-var insertData = function(APIData, TimeStamp, callback) {
-    for (var ind = 0; ind < APIData.length; ind++) {
-        console.log(APIData[ind].t);
-        var Ticker = APIData[ind].t;
-        var lastprice = APIData[ind].l;
-        var query = "update `table 1` set `" + TimeStamp + "`=" + lastprice + " where Symbol='" + Ticker + "'";
-        console.log(query);
-        con.query(query, function(err, result) {
-            if (err) {
-                console.log(err);
-                callback(false);
-            } else {
-                console.log("Succesfull User Account Created !!");
-                callback(true);
-            }
-        })
-    }
 
-}
-var updateData = function(index) {
-    var query = "select Symbol from `table 1`";
-    console.log(query);
-    con.query(query, function(err, result) {
-        if (err) {
-            console.log(err);
-            callback(false);
-        } else {
-            console.log(result);
-            var url = "http://finance.google.com/finance/info?client=ig&q=NASDAQ%3A";
-            console.log(result.length);
-            for (var ind = 0; ind < 200; ind++) {
-                if (ind == result.length - 1) {
-                    url = url + result[ind].Symbol;
-                } else {
-                    url = url + result[ind].Symbol + ","
-                }
-            }
-            console.log(url);
-            var client = new Client();
-            var APIdata = null;
-            client.get(url,
-                function(data, response) {
-                    console.log(data.toString());
-                    APIdata = data.toString().split('//')[1];
-                    APIdata = JSON.parse(APIdata);
-                    console.log(APIdata);
-                    insertData(APIdata, index, function(result) {});
-                })
-        }
-    })
-}
 var authorizeUser = function(body, callback) {
     var password = body.passwordLogin;
     var query = "select password from stockusers where email='" + body.emailLogin + "'";
@@ -105,8 +55,9 @@ var authorizeUser = function(body, callback) {
         }
     })
 }
-var saveContactsDetails = function(res, callback) {
-    var username = "ashwin";
+var saveContactsDetails = function(reqSession, res, callback) {
+    var username = reqSession.session.user;
+    console.log(reqSession.session);
     var query = "insert into Contacts values('','" + res.ContactName + "','" + res.ContactPhone + "','" + res.ContactPhone + "','" + res.ContactAddress + "','" + username + "')";
     console.log(query);
     con.query(query, function(err, result) {
@@ -119,8 +70,8 @@ var saveContactsDetails = function(res, callback) {
         }
     })
 }
-var getContactsDetails = function(res, callback) {
-    var query = "select * from Contacts limit 1000;"
+var getContactsDetails = function(req, res, callback) {
+    var query = "select * from Contacts where Username like '" + req.session.user + "' limit 1000;"
     console.log(query);
     con.query(query, function(err, result) {
         if (err) {
@@ -134,8 +85,8 @@ var getContactsDetails = function(res, callback) {
     })
 }
 
-var getMsgLog = function(res, callback) {
-    var query = "select * from SentMsgs order by SNO desc limit 1000;"
+var getMsgLog = function(req, res, callback) {
+    var query = "select * from SentMsgs where username like '" + req.session.user + "' order by SNO desc limit 1000;"
     console.log(query);
     con.query(query, function(err, result) {
         if (err) {
@@ -148,8 +99,8 @@ var getMsgLog = function(res, callback) {
         }
     })
 }
-var saveMessage = function(res, callback) {
-    var username = "ashwin";
+var saveMessage = function(req, res, callback) {
+    var username = req.session.user;
     var from = "+12564148586";
     var query = "insert into SentMsgs values('','" + username + "','" + from + "','" + res.phone + "','" + res.body + "','" + new Date() + "')"
     console.log(query);
@@ -193,7 +144,6 @@ var removeContactsDetails = function(res, callback) {
 
 exports.CreateUsers = CreateUsers;
 exports.saveContactsDetails = saveContactsDetails;
-exports.updateData = updateData;
 exports.getMsgLog = getMsgLog;
 exports.saveMessage = saveMessage;
 exports.authorizeUser = authorizeUser;

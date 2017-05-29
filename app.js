@@ -12,7 +12,7 @@ var getContacts = require('./routes/getContacts');
 var msgController = require('./routes/msgController');
 var addContact = require('./routes/addContact');
 var msglog = require('./routes/msglog');
-var getMsglogs = require('./routes/getMsglogs');
+var getMsglogs = require('./routes/getMsgLogs');
 var removeElem = require('./routes/removeElem');
 var signlogpage = require('./routes/signlogpage');
 
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use(sessionsexp({ resave: true, saveUninitialized: true, secret: 'einsite', cookie: { maxAge: 60000 } }));
+app.use(sessionsexp({ resave: true, saveUninitialized: true, secret: 'einsite', cookie: { maxAge: 600000 } }));
 
 app.use('/', signlogpage);
 app.use('/index', index);

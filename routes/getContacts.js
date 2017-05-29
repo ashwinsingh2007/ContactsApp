@@ -6,7 +6,7 @@ var db = require('../controllers/dbcontroller');
 /* GET Contact page. */
 router.get('/', function(req, res) {
     try {
-        db.getContactsDetails(res, function(result) {
+        db.getContactsDetails(req, res, function(result) {
             console.log(result);
         });
     } catch (ex) {
