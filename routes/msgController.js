@@ -14,13 +14,14 @@ router.get('/', function(req, res) {
             console.log(result);
             if (result) {
                 res.send(true);
+                db.saveMessage(req, param, function(result) {
+                    console.log(result);
+                });
             } else {
                 res.send(false);
             }
         });
-        db.saveMessage(req, param, function(result) {
-            console.log(result);
-        });
+
     } catch (ex) {
         res.send("Some error occured.")
         console.log(ex);
