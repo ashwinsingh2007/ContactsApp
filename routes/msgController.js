@@ -12,7 +12,11 @@ router.get('/', function(req, res) {
         var param = urlParse.query;
         msgController.sendMessage(param, function(result) {
             console.log(result);
-            res.send("Message sent successfully.");
+            if (result) {
+                res.send(true);
+            } else {
+                res.send(false);
+            }
         });
         db.saveMessage(req, param, function(result) {
             console.log(result);

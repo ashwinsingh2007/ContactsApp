@@ -11,7 +11,14 @@ var sendMessage = function(res, callback) {
     messageContent.body = res.body;
     messageContent.to = res.phone;
     messageContent.from = "+12564148586";
-    client.messages.create(messageContent)
-        .then((message) => callback(message.sid));
+    client.messages.create(messageContent, function(error, message) {
+        if (error) {
+            console.log(error.message);
+            callback(false)
+        } else {
+            console.log(message.sid);
+            callback(true)
+        }
+    });
 }
 exports.sendMessage = sendMessage;

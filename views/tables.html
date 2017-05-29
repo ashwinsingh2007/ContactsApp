@@ -49,6 +49,8 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title" id=name></h4>
+                    <p>*Message couldnot be send to this number untill it's' verified by twilio API.Please contact '7723855011' for twilio number verification.
+                        <p>
                 </div>
                 <div class="modal-body">
                     <form role="form" class="form-horizontal">
@@ -199,7 +201,6 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Save Draft</button>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendMessage(this)">Send <i class="fa fa-arrow-circle-right fa-lg"></i></button>
                                     </div>
                                 </div>
@@ -289,6 +290,10 @@
             ContactDetails.ContactName = $(parent).find('#inputName').val();
             ContactDetails.ContactPhone = $(parent).find('#inputPhone').val();
             ContactDetails.ContactAddress = $(parent).find('#inputAddress').val();
+            if (!!ContactDetails.ContactName == '' || !!ContactDetails.ContactPhone == '' || ContactDetails.ContactAddress == '') {
+                alert("Please add all fields.");
+                return;
+            }
             $.ajax({
                 type: 'get',
                 url: '/addContact',
@@ -312,7 +317,12 @@
                 url: '/msgController',
                 data: message_data,
                 success: function(data) {
-                    alert("OTP sent successfully. OTP sent was : " + OTP);
+                    if (data) {
+                        alert("OTP sent successfully. OTP sent was : " + OTP);
+                    } else {
+                        alert("Message couldnot be send as message is not verified by twilio API.Please contact '7723855011' for twilio number verification.");
+                    }
+
                 }
             });
         }
@@ -329,7 +339,11 @@
                     url: '/msgController',
                     data: message_data,
                     success: function(data) {
-                        alert(data);
+                        if (data) {
+                            alert("Your custom message has been sent.");
+                        } else {
+                            alert("Message couldnot be send as message is not verified by twilio API.Please contact '7723855011' for twilio number verification.");
+                        }
                     }
                 });
             }
